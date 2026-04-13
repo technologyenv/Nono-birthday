@@ -6,21 +6,22 @@
     <title>Birthday Surprise | نونو</title>
     <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;700&family=Dancing+Script:wght@700&display=swap" rel="stylesheet">
     <style>
-        :root { --primary: #ff758c; --secondary: #ffafbd; }
-        body { margin: 0; padding: 0; font-family: 'Cairo', sans-serif; background: #fdfdfe; min-height: 100vh; overflow-x: hidden; }
+        :root { --primary: #ff758c; --secondary: #ffafbd; --bg-pink: #ffe4e9; }
+        /* هنا غيرت لون الخلفية الأساسي للموقع */
+        body { margin: 0; padding: 0; font-family: 'Cairo', sans-serif; background: var(--bg-pink); min-height: 100vh; overflow-x: hidden; }
         
         #overlay { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: #fff; z-index: 1000; display: none; flex-direction: column; align-items: center; justify-content: center; }
         .enter-btn { background: var(--primary); color: white; border: none; padding: 15px 40px; border-radius: 50px; font-size: 1.3em; cursor: pointer; box-shadow: 0 10px 20px rgba(255, 117, 140, 0.3); animation: pulse 2s infinite; }
         @keyframes pulse { 0%, 100% { transform: scale(1); } 50% { transform: scale(1.05); } }
 
         #mainContent { opacity: 0; transition: opacity 1s ease-in; display: flex; flex-direction: column; align-items: center; text-align: center; width: 100%; }
+        /* الكنتينر خليته أبيض عشان يبرز فوق الخلفية البينك */
         .container { background: white; padding: 35px 25px; border-radius: 35px; box-shadow: 0 20px 50px rgba(0,0,0,0.06); width: 85%; max-width: 420px; margin: 40px 20px; border: 1px solid #fceef0; }
 
         .slider-frame { position: relative; width: 100%; height: 380px; border-radius: 25px; overflow: hidden; margin: 20px 0; border: 4px solid #fff; box-shadow: 0 10px 25px rgba(0,0,0,0.1); }
         .slider-frame img { width: 100%; height: 100%; object-fit: cover; position: absolute; top: 0; left: 0; opacity: 0; transition: opacity 1.5s; }
         .slider-frame img.active { opacity: 1; }
 
-        /* ستايل عداد الصداقة الجديد */
         .friendship-box { background: #fff0f3; padding: 15px; border-radius: 20px; margin: 20px 0; border: 1px solid #ffcad4; }
         .friendship-box h4 { color: var(--primary); margin: 0 0 10px 0; font-size: 1em; }
         #friendship-counter { font-weight: bold; color: #d63384; font-size: 0.9em; }
@@ -102,14 +103,11 @@
             setInterval(createFloating, 400);
         }
 
-        // --- العدادات ---
         const birthdayDate = new Date("April 20, 2026 00:00:00").getTime();
         const friendshipStartDate = new Date("March 25, 2026 00:00:00").getTime();
 
         setInterval(() => {
             const now = new Date().getTime();
-
-            // 1. حساب عداد عيد الميلاد (تنازلي)
             const diffB = birthdayDate - now;
             const daysB = Math.floor(diffB / (1000 * 60 * 60 * 24));
             const hoursB = Math.floor((diffB % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
@@ -119,13 +117,11 @@
                 document.getElementById("countdown").innerHTML = `عيد ميلاد سعيد يا نونو! 🎉✨`;
             }
 
-            // 2. حساب عداد الصداقة (تصاعدي من يوم 25 مارس)
             const diffF = now - friendshipStartDate;
             const daysF = Math.floor(diffF / (1000 * 60 * 60 * 24));
             const hoursF = Math.floor((diffF % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
             const minsF = Math.floor((diffF % (1000 * 60 * 60)) / (1000 * 60));
             document.getElementById("friendship-counter").innerHTML = `${daysF} يوم و ${hoursF} ساعة و ${minsF} دقيقة ❤️`;
-            
         }, 1000);
 
         const msgs = ["ضحكتك بتنور الدنيا ✨", "إنت بجد شخص مفيش منك اتنين!", "يوم ميلادك أحلى يوم 🎈", "يا رب دايماً ناجح ومبسوط ❤️", "ممنونة لكل لحظة معاك", "اللي جاي أحلى بكتير 🌟"];
