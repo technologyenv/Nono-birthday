@@ -3,64 +3,130 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Birthday Surprise | نونو</title>
+    <title>Birthday Surprise | نونو ✨</title>
     <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;700&family=Dancing+Script:wght@700&display=swap" rel="stylesheet">
     <style>
-        :root { --primary: #ff758c; --secondary: #ffafbd; }
-        body { margin: 0; padding: 0; font-family: 'Cairo', sans-serif; background: #fdfdfe; min-height: 100vh; overflow-x: hidden; }
+        :root { 
+            --deep-pink: #c2185b; /* بينك غامق */
+            --mid-pink: #ad1457; 
+            --soft-pink: #f8bbd0;
+            --bg-dark: #880e4f; /* أغمق درجة للخلفية */
+        }
         
-        #overlay { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: #fff; z-index: 1000; display: none; flex-direction: column; align-items: center; justify-content: center; }
-        .enter-btn { background: var(--primary); color: white; border: none; padding: 15px 40px; border-radius: 50px; font-size: 1.3em; cursor: pointer; box-shadow: 0 10px 20px rgba(255, 117, 140, 0.3); animation: pulse 2s infinite; }
-        @keyframes pulse { 0%, 100% { transform: scale(1); } 50% { transform: scale(1.05); } }
+        body { 
+            margin: 0; padding: 0; font-family: 'Cairo', sans-serif; 
+            background: var(--bg-dark); /* مفيش أبيض خالص */
+            min-height: 100vh; overflow-x: hidden; color: white;
+        }
 
-        #mainContent { opacity: 0; transition: opacity 1s ease-in; display: flex; flex-direction: column; align-items: center; text-align: center; width: 100%; }
-        .container { background: white; padding: 35px 25px; border-radius: 35px; box-shadow: 0 20px 50px rgba(0,0,0,0.06); width: 85%; max-width: 420px; margin: 40px 20px; border: 1px solid #fceef0; }
+        /* شاشة الباسورد الجديدة */
+        #password-gate {
+            position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+            background: var(--bg-dark); z-index: 2000;
+            display: flex; flex-direction: column; align-items: center; justify-content: center;
+        }
+        .pass-card {
+            background: var(--mid-pink); padding: 40px; border-radius: 30px;
+            box-shadow: 0 15px 35px rgba(0,0,0,0.3); border: 2px solid var(--soft-pink);
+            text-align: center; width: 85%; max-width: 350px;
+        }
+        input#passInput {
+            width: 100%; padding: 12px; margin: 20px 0; border-radius: 15px;
+            border: none; text-align: center; font-size: 1.1em; outline: none;
+            background: var(--soft-pink); color: var(--bg-dark); font-weight: bold;
+        }
 
-        .slider-frame { position: relative; width: 100%; height: 380px; border-radius: 25px; overflow: hidden; margin: 20px 0; border: 4px solid #fff; box-shadow: 0 10px 25px rgba(0,0,0,0.1); }
+        #overlay { 
+            position: fixed; top: 0; left: 0; width: 100%; height: 100%; 
+            background: var(--mid-pink); z-index: 1000; display: none; 
+            flex-direction: column; align-items: center; justify-content: center; 
+        }
+        
+        .enter-btn { 
+            background: var(--soft-pink); color: var(--bg-dark); border: none; 
+            padding: 15px 40px; border-radius: 50px; font-size: 1.3em; 
+            cursor: pointer; font-weight: 800; box-shadow: 0 10px 20px rgba(0,0,0,0.2); 
+            animation: pulse 2s infinite; 
+        }
+
+        @keyframes pulse { 0%, 100% { transform: scale(1); opacity: 1; } 50% { transform: scale(1.1); opacity: 0.8; } }
+
+        #mainContent { 
+            opacity: 0; transition: opacity 1s ease-in; 
+            display: flex; flex-direction: column; align-items: center; text-align: center; width: 100%; 
+        }
+
+        .container { 
+            background: var(--mid-pink); padding: 35px 25px; border-radius: 35px; 
+            box-shadow: 0 20px 50px rgba(0,0,0,0.4); width: 85%; max-width: 420px; 
+            margin: 40px 20px; border: 2px solid var(--deep-pink); 
+        }
+
+        .slider-frame { 
+            position: relative; width: 100%; height: 380px; border-radius: 25px; 
+            overflow: hidden; margin: 20px 0; border: 3px solid var(--soft-pink); 
+            box-shadow: 0 0 20px var(--deep-pink);
+        }
         .slider-frame img { width: 100%; height: 100%; object-fit: cover; position: absolute; top: 0; left: 0; opacity: 0; transition: opacity 1.5s; }
         .slider-frame img.active { opacity: 1; }
 
-        /* ستايل عداد الصداقة الجديد */
-        .friendship-box { background: #fff0f3; padding: 15px; border-radius: 20px; margin: 20px 0; border: 1px solid #ffcad4; }
-        .friendship-box h4 { color: var(--primary); margin: 0 0 10px 0; font-size: 1em; }
-        #friendship-counter { font-weight: bold; color: #d63384; font-size: 0.9em; }
+        .friendship-box { 
+            background: var(--bg-dark); padding: 15px; border-radius: 20px; 
+            margin: 20px 0; border: 1px solid var(--soft-pink); 
+        }
+        .friendship-box h4 { color: var(--soft-pink); margin: 0 0 10px 0; }
+        #friendship-counter { font-weight: bold; color: #ffeb3b; font-size: 1em; text-shadow: 0 0 5px rgba(255,235,59,0.5); }
 
         .flip-card { background-color: transparent; width: 100%; height: 180px; perspective: 1000px; margin: 25px 0; }
-        .flip-card-inner { position: relative; width: 100%; height: 100%; text-align: center; transition: transform 0.8s; transform-style: preserve-3d; cursor: pointer; }
+        .flip-card-inner { position: relative; width: 100%; height: 100%; transition: transform 0.8s; transform-style: preserve-3d; cursor: pointer; }
         .flip-card:hover .flip-card-inner { transform: rotateY(180deg); }
-        .flip-front, .flip-back { position: absolute; width: 100%; height: 100%; backface-visibility: hidden; border-radius: 20px; display: flex; align-items: center; justify-content: center; flex-direction: column; padding: 10px; }
-        .flip-front { background: var(--secondary); color: white; border: 2px dashed white; }
-        .flip-back { background: var(--primary); color: white; transform: rotateY(180deg); }
+        .flip-front, .flip-back { position: absolute; width: 100%; height: 100%; backface-visibility: hidden; border-radius: 20px; display: flex; align-items: center; justify-content: center; flex-direction: column; padding: 15px; }
+        .flip-front { background: var(--deep-pink); color: white; border: 2px dashed var(--soft-pink); }
+        .flip-back { background: var(--bg-dark); color: var(--soft-pink); transform: rotateY(180deg); border: 2px solid var(--soft-pink); }
 
-        .magic-btn { background: white; color: var(--primary); border: 2px solid var(--primary); padding: 10px 20px; border-radius: 25px; cursor: pointer; font-weight: bold; margin-top: 15px; }
-        #random-msg { margin-top: 15px; color: #ff4d6d; font-style: italic; min-height: 40px; }
+        .magic-btn { 
+            background: var(--soft-pink); color: var(--bg-dark); border: none; 
+            padding: 12px 25px; border-radius: 25px; cursor: pointer; 
+            font-weight: bold; margin-top: 15px; box-shadow: 0 5px 15px rgba(0,0,0,0.2);
+        }
+        #random-msg { margin-top: 15px; color: #fff; font-weight: bold; min-height: 40px; text-shadow: 1px 1px 2px var(--bg-dark); }
 
-        .floating { position: fixed; pointer-events: none; z-index: -1; animation: moveUp 6s linear forwards; }
+        .floating { position: fixed; pointer-events: none; z-index: -1; animation: moveUp 6s linear forwards; opacity: 0.6; }
         @keyframes moveUp { 0% { transform: translateY(110vh) rotate(0); opacity: 1; } 100% { transform: translateY(-20vh) rotate(360deg); opacity: 0; } }
         
-        .english-quote { font-family: 'Dancing Script', cursive; font-size: 1.5em; color: var(--primary); margin: 20px 0; direction: ltr; }
-        #myAudio { display: none; }
+        .english-quote { font-family: 'Dancing Script', cursive; font-size: 1.8em; color: var(--soft-pink); margin: 20px 0; direction: ltr; }
+        #countdown { color: #fff; background: var(--bg-dark); padding: 12px; border-radius: 50px; border: 1px solid var(--soft-pink); }
     </style>
 </head>
 <body>
 
+    <div id="password-gate">
+        <div class="pass-card">
+            <h2 style="color: white; margin: 0;">🔐 قفل المفاجأة</h2>
+            <p style="color: var(--soft-pink); margin-top: 10px;">أدخلي التاريخ السري يا نونو</p>
+            <input type="text" id="passInput" placeholder="اليوم/الشهر/السنة">
+            <button class="magic-btn" style="width: 100%;" onclick="unlock()">فتح 🔓</button>
+            <p id="error-msg" style="display:none; color: #ffeb3b; margin-top: 10px; font-size: 0.9em;">ركز يا نونو! 😉</p>
+        </div>
+    </div>
+
     <div id="overlay">
-        <h2 style="color: #ff758c;">جاهز للمفاجأة؟ ✨</h2>
+        <h2 style="color: white; margin-bottom: 30px;">جاهز للمفاجأة؟ ✨</h2>
         <button class="enter-btn" onclick="startEverything()">افتح الهدية 🎁</button>
     </div>
 
     <div id="mainContent">
         <div id="floating-container"></div>
         <div class="container">
-            <h1>كل سنة وأنت طيب يا نونو ✨</h1>
+            <h1 style="color: white; font-weight: 800;">كل سنة وأنت طيب يا نونو ✨</h1>
             
-            <div id="countdown" style="color: var(--primary); font-weight: bold; background: #fff5f6; padding: 10px; border-radius: 50px; margin: 10px 0;">جاري الحساب...</div>
+            <div id="countdown">جاري الحساب...</div>
             
             <div class="slider-frame" id="slider1">
                 <img src="1.jpg" class="active"><img src="2.jpg"><img src="3.jpg">
             </div>
 
-            <p style="color: #555;">ذكرياتنا هي أحلى حاجة حصلت في حياتي..</p>
+            <p style="color: var(--soft-pink); font-size: 1.1em;">ذكرياتنا هي أحلى حاجة حصلت في حياتي..</p>
 
             <div class="friendship-box">
                 <h4>إحنا مع بعض بقالنا: ✨</h4>
@@ -88,28 +154,29 @@
     </div>
 
     <script>
-        function checkPassword() {
-            var p = prompt("أدخل تاريخ ميلادك السري (20/4/2000):");
-            if (p === "20/4/2000") { document.getElementById("overlay").style.display = "flex"; }
-            else { alert("ركز يا نونو!"); checkPassword(); }
+        function unlock() {
+            const p = document.getElementById("passInput").value;
+            if (p === "20/4/2000") {
+                document.getElementById("password-gate").style.display = "none";
+                document.getElementById("overlay").style.display = "flex";
+            } else {
+                document.getElementById("error-msg").style.display = "block";
+                document.getElementById("passInput").value = "";
+            }
         }
-        window.onload = checkPassword;
 
         function startEverything() {
-            document.getElementById("myAudio").play();
+            document.getElementById("myAudio").play().catch(() => { console.log("Audio play blocked"); });
             document.getElementById("overlay").style.display = "none";
             document.getElementById("mainContent").style.opacity = "1";
             setInterval(createFloating, 400);
         }
 
-        // --- العدادات ---
         const birthdayDate = new Date("April 20, 2026 00:00:00").getTime();
         const friendshipStartDate = new Date("March 25, 2026 00:00:00").getTime();
 
         setInterval(() => {
             const now = new Date().getTime();
-
-            // 1. حساب عداد عيد الميلاد (تنازلي)
             const diffB = birthdayDate - now;
             const daysB = Math.floor(diffB / (1000 * 60 * 60 * 24));
             const hoursB = Math.floor((diffB % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
@@ -119,13 +186,11 @@
                 document.getElementById("countdown").innerHTML = `عيد ميلاد سعيد يا نونو! 🎉✨`;
             }
 
-            // 2. حساب عداد الصداقة (تصاعدي من يوم 25 مارس)
             const diffF = now - friendshipStartDate;
             const daysF = Math.floor(diffF / (1000 * 60 * 60 * 24));
             const hoursF = Math.floor((diffF % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
             const minsF = Math.floor((diffF % (1000 * 60 * 60)) / (1000 * 60));
             document.getElementById("friendship-counter").innerHTML = `${daysF} يوم و ${hoursF} ساعة و ${minsF} دقيقة ❤️`;
-            
         }, 1000);
 
         const msgs = ["ضحكتك بتنور الدنيا ✨", "إنت بجد شخص مفيش منك اتنين!", "يوم ميلادك أحلى يوم 🎈", "يا رب دايماً ناجح ومبسوط ❤️", "ممنونة لكل لحظة معاك", "اللي جاي أحلى بكتير 🌟"];
@@ -146,11 +211,11 @@
 
         function createFloating() {
             const el = document.createElement("div");
-            const items = ["❤️", "🎈", "✨", "🌸"];
+            const items = ["❤️", "🎈", "✨", "🌸", "💖"];
             el.innerHTML = items[Math.floor(Math.random()*items.length)];
             el.className = "floating";
             el.style.left = Math.random() * 100 + "vw";
-            el.style.fontSize = (Math.random() * 20 + 15) + "px";
+            el.style.fontSize = (Math.random() * 20 + 20) + "px";
             document.getElementById("floating-container").appendChild(el);
             setTimeout(() => el.remove(), 6000);
         }
