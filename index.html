@@ -7,14 +7,20 @@
     <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;700;800&family=Dancing+Script:wght@700&display=swap" rel="stylesheet">
     <style>
         :root { 
-            --main-pink: #ff4d94; /* بينك ظاهر وغامق سيكا */
+            --main-pink: #ff4d94; 
             --darker-pink: #e6005c; 
             --soft-pink: #fff0f5;
             --bg-pink: #ffdeeb; 
         }
-        body { margin: 0; padding: 0; font-family: 'Cairo', sans-serif; background: var(--bg-pink); color: #4a001f; min-height: 100vh; overflow-x: hidden; }
+        * { box-sizing: border-box; }
+        body { 
+            margin: 0; padding: 0; font-family: 'Cairo', sans-serif; 
+            background: var(--bg-pink); color: #4a001f; 
+            min-height: 100vh; overflow-x: hidden;
+            display: flex; flex-direction: column; align-items: center; /* سنترة المحتوى بالكامل */
+        }
 
-        /* شاشة الباسورد - نظيفة تماماً */
+        /* شاشة الباسورد */
         #password-gate { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: var(--bg-pink); z-index: 5000; display: flex; align-items: center; justify-content: center; }
         .pass-card { background: white; padding: 40px; border-radius: 30px; box-shadow: 0 15px 40px rgba(255, 77, 148, 0.3); border: 3px solid var(--main-pink); text-align: center; width: 85%; max-width: 380px; }
         input#passInput { width: 100%; padding: 15px; margin: 20px 0; border-radius: 15px; border: 2px solid var(--main-pink); text-align: center; font-size: 1.2em; outline: none; background: #fff; color: var(--darker-pink); font-weight: bold; }
@@ -25,49 +31,58 @@
         @keyframes pulse { 0%, 100% { transform: scale(1); } 50% { transform: scale(1.08); } }
 
         /* المحتوى الرئيسي */
-        #mainContent { opacity: 0; transition: opacity 1s ease-in; display: flex; flex-direction: column; align-items: center; width: 100%; padding-bottom: 50px; }
-        .container { background: white; padding: 40px 25px; border-radius: 40px; box-shadow: 0 20px 50px rgba(255, 77, 148, 0.2); width: 92%; max-width: 450px; margin: 40px 0; border: 2px solid var(--main-pink); position: relative; z-index: 10; }
+        #mainContent { 
+            opacity: 0; transition: opacity 1s ease-in; 
+            display: flex; flex-direction: column; align-items: center; 
+            width: 100%; padding: 20px 0 60px 0; 
+        }
+        .container { 
+            background: white; padding: 40px 25px; border-radius: 40px; 
+            box-shadow: 0 20px 50px rgba(255, 77, 148, 0.2); 
+            width: 90%; max-width: 450px; 
+            border: 2px solid var(--main-pink); 
+            position: relative; z-index: 10;
+            display: flex; flex-direction: column; align-items: center; /* سنترة العناصر جوا الكونتينر */
+        }
 
-        /* المسافات بين العناصر */
-        .section-gap { margin-bottom: 60px; position: relative; width: 100%; }
+        .section-gap { margin-bottom: 60px; width: 100%; display: flex; flex-direction: column; align-items: center; }
 
-        /* القلب النابض */
         .nono-heart { font-size: 80px; color: var(--darker-pink); animation: beat 1.2s infinite; cursor: pointer; position: relative; display: inline-block; }
         .nono-heart::after { content: 'Nono'; position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); color: white; font-weight: 800; font-size: 18px; text-shadow: 1px 1px 3px rgba(0,0,0,0.3); }
         @keyframes beat { 0%, 100% { transform: scale(1); } 50% { transform: scale(1.15); } }
 
-        /* السلايدر */
         .slider-frame { position: relative; width: 100%; height: 380px; border-radius: 25px; overflow: hidden; border: 5px solid white; box-shadow: 0 10px 20px rgba(0,0,0,0.1); }
         .slider-frame img { width: 100%; height: 100%; object-fit: cover; position: absolute; top: 0; left: 0; opacity: 0; transition: opacity 1.5s; }
         .slider-frame img.active { opacity: 1; }
 
-        /* العجلة */
         #wheel { width: 220px; height: 220px; border-radius: 50%; border: 6px solid white; transition: transform 4s cubic-bezier(0.17, 0.67, 0.12, 0.99); background: conic-gradient(var(--main-pink) 0deg 60deg, var(--darker-pink) 60deg 120deg, var(--main-pink) 120deg 180deg, var(--darker-pink) 180deg 240deg, var(--main-pink) 240deg 300deg, var(--darker-pink) 300deg 360deg); box-shadow: 0 10px 20px rgba(255,77,148,0.4); }
 
-        /* الكارت */
         .flip-card { width: 100%; height: 160px; perspective: 1000px; }
         .flip-card-inner { position: relative; width: 100%; height: 100%; transition: transform 0.8s; transform-style: preserve-3d; cursor: pointer; }
         .flip-card:hover .flip-card-inner { transform: rotateY(180deg); }
-        .flip-front, .flip-back { position: absolute; width: 100%; height: 100%; backface-visibility: hidden; border-radius: 20px; display: flex; align-items: center; justify-content: center; padding: 20px; }
+        .flip-front, .flip-back { position: absolute; width: 100%; height: 100%; backface-visibility: hidden; border-radius: 20px; display: flex; align-items: center; justify-content: center; padding: 20px; text-align: center; }
         .flip-front { background: var(--main-pink); color: white; border: 2px dashed white; font-size: 1.2em; font-weight: bold; }
-        .flip-back { background: var(--darker-pink); color: white; transform: rotateY(180deg); font-size: 1.1em; }
+        .flip-back { background: var(--darker-pink); color: white; transform: rotateY(180deg); font-size: 1em; line-height: 1.4; }
 
-        /* صندوق الذكريات */
-        .memory-box { background: var(--soft-pink); padding: 30px; border-radius: 30px; border: 2px solid var(--main-pink); }
+        .memory-box { background: var(--soft-pink); padding: 30px; border-radius: 30px; border: 2px solid var(--main-pink); width: 100%; }
 
-        /* الأزرار */
         .magic-btn { background: var(--main-pink); color: white; border: none; padding: 14px 30px; border-radius: 30px; cursor: pointer; font-weight: bold; font-size: 1.1em; box-shadow: 0 5px 15px rgba(255,77,148,0.3); margin-top: 15px; }
 
-        /* العناصر الطائرة (خلفية) */
+        .final-message { 
+            font-family: 'Dancing Script', cursive; font-size: 1.3em; 
+            color: var(--darker-pink); line-height: 1.6; 
+            background: var(--soft-pink); padding: 20px; 
+            border-radius: 20px; border: 1px dashed var(--main-pink);
+            margin-top: 20px; direction: ltr; /* لضبط تنسيق الإنجليزي */
+        }
+
+        /* المطر والعناصر الطائرة */
         .floating { position: fixed; pointer-events: none; z-index: -1; animation: moveUp 6s linear forwards; }
         @keyframes moveUp { 0% { transform: translateY(110vh) rotate(0); opacity: 1; } 100% { transform: translateY(-20vh) rotate(360deg); opacity: 0; } }
-
-        /* مطرة الفرح (فوق الصور) */
         .joy-particle { position: fixed; pointer-events: none; z-index: 100; font-size: 30px; animation: rainFall 3s linear forwards; }
         @keyframes rainFall { 0% { transform: translateY(-10vh) rotate(0); opacity: 1; } 100% { transform: translateY(110vh) rotate(360deg); opacity: 0; } }
-
         .butterfly-deco { position: absolute; font-size: 24px; z-index: 15; animation: flutter 3s infinite ease-in-out; }
-        @keyframes flutter { 0%, 100% { transform: translateY(0) rotate(0); } 50% { transform: translateY(-10px) rotate(15deg); } }
+        @keyframes flutter { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-10px); } }
     </style>
 </head>
 <body>
@@ -93,7 +108,7 @@
         
         <div class="container">
             <div class="section-gap">
-                <h1 style="color: var(--darker-pink); font-weight: 800; margin: 0;">كل سنة وأنت طيب يا نونو ✨</h1>
+                <h1 style="color: var(--darker-pink); font-weight: 800; margin: 0; text-align: center;">كل سنة وأنت طيب يا نونو ✨</h1>
             </div>
 
             <div class="section-gap">
@@ -101,7 +116,7 @@
             </div>
 
             <div class="section-gap">
-                <div id="countdown" style="font-weight: bold; background: var(--soft-pink); padding: 15px; border-radius: 50px; border: 1px solid var(--main-pink);">جاري الحساب...</div>
+                <div id="countdown" style="font-weight: bold; background: var(--soft-pink); padding: 15px; border-radius: 50px; border: 1px solid var(--main-pink); width: 100%; text-align: center;">جاري الحساب...</div>
             </div>
 
             <div class="section-gap">
@@ -109,7 +124,7 @@
             </div>
 
             <div class="section-gap">
-                <div class="butterfly-deco" style="top: -20px; right: -10px;">🦋</div>
+                <div class="butterfly-deco" style="top: -20px; right: 0;">🦋</div>
                 <div class="slider-frame" id="slider1">
                     <img src="1.jpg" class="active"><img src="2.jpg"><img src="3.jpg">
                 </div>
@@ -118,11 +133,11 @@
             <div class="section-gap">
                 <div id="wheel"></div>
                 <button class="magic-btn" onclick="spinWheel()">لف العجلة وشوف حظك 🎡</button>
-                <div id="wheel-msg" style="margin-top: 20px; font-weight: bold; color: var(--darker-pink); min-height: 25px;"></div>
+                <div id="wheel-msg" style="margin-top: 20px; font-weight: bold; color: var(--darker-pink); min-height: 25px; text-align: center;"></div>
             </div>
 
             <div class="section-gap">
-                <div class="butterfly-deco" style="top: -20px; left: -10px;">🦋</div>
+                <div class="butterfly-deco" style="top: -20px; left: 0;">🦋</div>
                 <div class="flip-card">
                     <div class="flip-card-inner">
                         <div class="flip-front"><h3>المس الكارت يا نونو 🃏</h3></div>
@@ -133,9 +148,9 @@
 
             <div class="section-gap">
                 <div class="memory-box">
-                    <h3 style="margin: 0; color: var(--darker-pink);">صندوق ذكريات نونو 📦</h3>
-                    <p id="memory-text" style="margin: 20px 0; font-style: italic; color: #555;">دوس عشان تشوف ذكرى حلوة..</p>
-                    <button class="magic-btn" onclick="openMemory()">افتح الصندوق ✨</button>
+                    <h3 style="margin: 0; color: var(--darker-pink); text-align: center;">صندوق ذكريات نونو 📦</h3>
+                    <p id="memory-text" style="margin: 20px 0; font-style: italic; color: #555; text-align: center;">دوس عشان تشوف ذكرى حلوة..</p>
+                    <button class="magic-btn" style="width: 100%;" onclick="openMemory()">افتح الصندوق ✨</button>
                 </div>
             </div>
 
@@ -145,7 +160,11 @@
                 </div>
             </div>
 
-            <div style="font-family: 'Dancing Script', cursive; font-size: 2em; color: var(--darker-pink); margin-top: 20px;">"You are simply the best!" ✨</div>
+            <div class="final-message">
+                To the best person in the whole world, to my safe place, to nono ❤️‍🩹<br><br>
+                Happy birthday to you my cute baby I wish you all the best, may god bless you 💖 🙏<br><br>
+                Thank you for being in my life I really appreciate every moment I spend with you.
+            </div>
 
             <audio id="myAudio" loop><source src="music.mp3" type="audio/mpeg"></audio>
         </div>
@@ -164,8 +183,7 @@
         }
 
         function startEverything() {
-            const audio = document.getElementById("myAudio");
-            audio.play().catch(e => console.log("Music ready"));
+            document.getElementById("myAudio").play().catch(e => console.log("Music ready"));
             document.getElementById("overlay").style.display = "none";
             document.getElementById("mainContent").style.opacity = "1";
             setInterval(spawnFloating, 500);
@@ -204,8 +222,7 @@
 
         const birthdayDate = new Date("April 20, 2026 00:00:00").getTime();
         setInterval(() => {
-            const now = new Date().getTime();
-            const diff = birthdayDate - now;
+            const diff = birthdayDate - new Date().getTime();
             const days = Math.floor(diff / (1000 * 60 * 60 * 24));
             const hours = Math.floor((diff % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
             document.getElementById("countdown").innerHTML = diff > 0 ? `باقي ${days} يوم و ${hours} ساعة على يومك الكبير 🎂` : "عيد ميلاد سعيد يا نونو! 🎉";
@@ -222,12 +239,13 @@
         runSlider('slider1'); runSlider('slider2');
 
         function spawnFloating() {
+            const container = document.getElementById("floating-container");
             const el = document.createElement("div");
             el.innerHTML = ["❤️", "🦋", "✨", "🌸", "💖"][Math.floor(Math.random()*5)];
             el.className = "floating";
             el.style.left = Math.random() * 100 + "vw";
             el.style.fontSize = (Math.random() * 20 + 20) + "px";
-            document.getElementById("floating-container").appendChild(el);
+            container.appendChild(el);
             setTimeout(() => el.remove(), 6000);
         }
     </script>
