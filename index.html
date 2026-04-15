@@ -6,135 +6,155 @@
     <title>Birthday Surprise | نونو ✨</title>
     <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;700;800&family=Dancing+Script:wght@700&display=swap" rel="stylesheet">
     <style>
-        :root { --main-pink: #ff85a1; --darker-pink: #f06292; --soft-pink: #ffebee; --bg-pink: #fce4ec; }
-        * { box-sizing: border-box; transition: all 0.3s ease; }
-        body { margin: 0; padding: 0; font-family: 'Cairo', sans-serif; background: var(--bg-pink); color: #880e4f; min-height: 100vh; overflow-x: hidden; }
+        :root { 
+            --main-pink: #ff4d94; /* بينك ظاهر وغامق سيكا */
+            --darker-pink: #e6005c; 
+            --soft-pink: #fff0f5;
+            --bg-pink: #ffdeeb; 
+        }
+        body { margin: 0; padding: 0; font-family: 'Cairo', sans-serif; background: var(--bg-pink); color: #4a001f; min-height: 100vh; overflow-x: hidden; }
 
-        /* شاشة الباسورد السرية (تم إخفاء التاريخ) */
-        #password-gate { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: var(--bg-pink); z-index: 3000; display: flex; align-items: center; justify-content: center; }
-        .pass-card { background: white; padding: 45px; border-radius: 35px; box-shadow: 0 20px 50px rgba(255,133,161,0.25); border: 2px solid var(--main-pink); text-align: center; width: 90%; max-width: 380px; }
-        input#passInput { width: 100%; padding: 15px; margin: 25px 0; border-radius: 18px; border: 2px solid var(--soft-pink); text-align: center; font-size: 1.2em; outline: none; background: #fff; color: var(--darker-pink); font-weight: bold; }
-        input#passInput::placeholder { color: #ccc; font-weight: normal; font-size: 0.9em; }
+        /* شاشة الباسورد - نظيفة تماماً */
+        #password-gate { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: var(--bg-pink); z-index: 5000; display: flex; align-items: center; justify-content: center; }
+        .pass-card { background: white; padding: 40px; border-radius: 30px; box-shadow: 0 15px 40px rgba(255, 77, 148, 0.3); border: 3px solid var(--main-pink); text-align: center; width: 85%; max-width: 380px; }
+        input#passInput { width: 100%; padding: 15px; margin: 20px 0; border-radius: 15px; border: 2px solid var(--main-pink); text-align: center; font-size: 1.2em; outline: none; background: #fff; color: var(--darker-pink); font-weight: bold; }
+        
+        /* شاشة الدخول */
+        #overlay { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: var(--main-pink); z-index: 4000; display: none; flex-direction: column; align-items: center; justify-content: center; }
+        .enter-btn { background: white; color: var(--main-pink); border: none; padding: 18px 45px; border-radius: 50px; font-size: 1.4em; cursor: pointer; font-weight: 800; box-shadow: 0 10px 20px rgba(0,0,0,0.2); animation: pulse 2s infinite; }
+        @keyframes pulse { 0%, 100% { transform: scale(1); } 50% { transform: scale(1.08); } }
 
-        #overlay { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: var(--main-pink); z-index: 2000; display: none; flex-direction: column; align-items: center; justify-content: center; }
-        .enter-btn { background: white; color: var(--main-pink); border: none; padding: 18px 50px; border-radius: 50px; font-size: 1.4em; cursor: pointer; font-weight: 800; animation: pulse 2s infinite; box-shadow: 0 10px 25px rgba(0,0,0,0.1); }
-        @keyframes pulse { 0%, 100% { transform: scale(1); } 50% { transform: scale(1.05); } }
+        /* المحتوى الرئيسي */
+        #mainContent { opacity: 0; transition: opacity 1s ease-in; display: flex; flex-direction: column; align-items: center; width: 100%; padding-bottom: 50px; }
+        .container { background: white; padding: 40px 25px; border-radius: 40px; box-shadow: 0 20px 50px rgba(255, 77, 148, 0.2); width: 92%; max-width: 450px; margin: 40px 0; border: 2px solid var(--main-pink); position: relative; z-index: 10; }
 
-        #mainContent { opacity: 0; transition: opacity 1s ease-in; display: flex; flex-direction: column; align-items: center; text-align: center; width: 100%; }
-        .container { background: white; padding: 40px 30px; border-radius: 40px; box-shadow: 0 25px 60px rgba(255,133,161,0.15); width: 90%; max-width: 450px; margin: 50px 20px; border: 1px solid #fceef0; position: relative; z-index: 10; }
+        /* المسافات بين العناصر */
+        .section-gap { margin-bottom: 60px; position: relative; width: 100%; }
 
         /* القلب النابض */
-        .nono-heart { font-size: 90px; color: var(--darker-pink); animation: beat 1.2s infinite; cursor: pointer; position: relative; display: inline-block; margin: 40px 0; }
-        .nono-heart::before { content: '❤️'; }
-        .nono-heart::after { content: 'Nono'; position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); color: white; font-weight: 800; font-size: 20px; text-shadow: 1px 1px 3px rgba(0,0,0,0.3); }
+        .nono-heart { font-size: 80px; color: var(--darker-pink); animation: beat 1.2s infinite; cursor: pointer; position: relative; display: inline-block; }
+        .nono-heart::after { content: 'Nono'; position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); color: white; font-weight: 800; font-size: 18px; text-shadow: 1px 1px 3px rgba(0,0,0,0.3); }
         @keyframes beat { 0%, 100% { transform: scale(1); } 50% { transform: scale(1.15); } }
 
-        /* عداد ومطرة الفرح */
-        #countdown { font-weight: bold; font-size: 1.1em; color: var(--darker-pink); background: var(--soft-pink); padding: 15px; border-radius: 50px; margin: 20px 0 30px 0; border: 1px solid #ffcad4; }
-        .joy-btn { background: #ffeb3b; color: #880e4f; padding: 12px 25px; border-radius: 25px; border: none; font-weight: bold; cursor: pointer; margin-bottom: 40px; box-shadow: 0 5px 15px rgba(0,0,0,0.1); font-size: 1em; }
-        .joy-btn:hover { background: #fbc02d; transform: translateY(-3px); }
-
         /* السلايدر */
-        .slider-frame { position: relative; width: 100%; height: 400px; border-radius: 30px; overflow: hidden; margin: 40px 0; border: 5px solid white; box-shadow: 0 15px 35px rgba(0,0,0,0.1); }
+        .slider-frame { position: relative; width: 100%; height: 380px; border-radius: 25px; overflow: hidden; border: 5px solid white; box-shadow: 0 10px 20px rgba(0,0,0,0.1); }
         .slider-frame img { width: 100%; height: 100%; object-fit: cover; position: absolute; top: 0; left: 0; opacity: 0; transition: opacity 1.5s; }
         .slider-frame img.active { opacity: 1; }
 
         /* العجلة */
-        .wheel-container { margin: 50px 0; position: relative; display: flex; flex-direction: column; align-items: center; }
-        #wheel { width: 200px; height: 200px; border-radius: 50%; border: 6px solid white; transition: transform 4s cubic-bezier(0.17, 0.67, 0.12, 0.99); background: conic-gradient(var(--main-pink) 0deg 60deg, var(--darker-pink) 60deg 120deg, var(--main-pink) 120deg 180deg, var(--darker-pink) 180deg 240deg, var(--main-pink) 240deg 300deg, var(--darker-pink) 300deg 360deg); box-shadow: 0 10px 25px rgba(255,133,161,0.4); }
-        .wheel-pointer { width: 0; height: 0; border-left: 15px solid transparent; border-right: 15px solid transparent; border-top: 30px solid #880e4f; position: absolute; top: -10px; z-index: 10; filter: drop-shadow(0 2px 3px rgba(0,0,0,0.2)); }
-        #wheel-msg { margin-top: 20px; font-weight: bold; color: var(--darker-pink); min-height: 25px; font-size: 1.1em; text-shadow: 1px 1px 0px white; }
+        #wheel { width: 220px; height: 220px; border-radius: 50%; border: 6px solid white; transition: transform 4s cubic-bezier(0.17, 0.67, 0.12, 0.99); background: conic-gradient(var(--main-pink) 0deg 60deg, var(--darker-pink) 60deg 120deg, var(--main-pink) 120deg 180deg, var(--darker-pink) 180deg 240deg, var(--main-pink) 240deg 300deg, var(--darker-pink) 300deg 360deg); box-shadow: 0 10px 20px rgba(255,77,148,0.4); }
 
         /* الكارت */
-        .flip-card { width: 100%; height: 160px; perspective: 1000px; margin: 50px 0; }
+        .flip-card { width: 100%; height: 160px; perspective: 1000px; }
         .flip-card-inner { position: relative; width: 100%; height: 100%; transition: transform 0.8s; transform-style: preserve-3d; cursor: pointer; }
         .flip-card:hover .flip-card-inner { transform: rotateY(180deg); }
-        .flip-front, .flip-back { position: absolute; width: 100%; height: 100%; backface-visibility: hidden; border-radius: 25px; display: flex; align-items: center; justify-content: center; padding: 20px; box-shadow: 0 10px 25px rgba(0,0,0,0.1); }
-        .flip-front { background: var(--main-pink); color: white; border: 2px dashed rgba(255,255,255,0.6); }
-        .flip-front h3 { margin: 0; font-size: 1.3em; }
-        .flip-back { background: var(--darker-pink); color: white; transform: rotateY(180deg); border: 2px solid var(--soft-pink); }
-        .flip-back p { margin: 0; font-size: 1em; line-height: 1.5; }
+        .flip-front, .flip-back { position: absolute; width: 100%; height: 100%; backface-visibility: hidden; border-radius: 20px; display: flex; align-items: center; justify-content: center; padding: 20px; }
+        .flip-front { background: var(--main-pink); color: white; border: 2px dashed white; font-size: 1.2em; font-weight: bold; }
+        .flip-back { background: var(--darker-pink); color: white; transform: rotateY(180deg); font-size: 1.1em; }
 
         /* صندوق الذكريات */
-        .memory-box { background: white; padding: 30px; border-radius: 30px; border: 2px solid var(--main-pink); box-shadow: 0 15px 35px rgba(255,133,161,0.15); margin: 50px 0; position: relative; overflow: hidden; }
-        .memory-box::before { content: '📦'; position: absolute; top: -15px; right: -15px; font-size: 50px; opacity: 0.1; }
-        #memory-text { font-style: italic; color: #666; margin: 20px 0; min-height: 40px; font-size: 1em; line-height: 1.5; }
+        .memory-box { background: var(--soft-pink); padding: 30px; border-radius: 30px; border: 2px solid var(--main-pink); }
 
-        .magic-btn { background: var(--main-pink); color: white; border: none; padding: 15px 30px; border-radius: 30px; cursor: pointer; font-weight: bold; font-size: 1.1em; box-shadow: 0 5px 15px rgba(255,133,161,0.3); }
-        .magic-btn:hover { background: var(--darker-pink); transform: scale(1.05); }
+        /* الأزرار */
+        .magic-btn { background: var(--main-pink); color: white; border: none; padding: 14px 30px; border-radius: 30px; cursor: pointer; font-weight: bold; font-size: 1.1em; box-shadow: 0 5px 15px rgba(255,77,148,0.3); margin-top: 15px; }
 
-        .floating { position: fixed; pointer-events: none; z-index: -1; animation: moveUp 6s linear forwards; opacity: 0.8; }
+        /* العناصر الطائرة (خلفية) */
+        .floating { position: fixed; pointer-events: none; z-index: -1; animation: moveUp 6s linear forwards; }
         @keyframes moveUp { 0% { transform: translateY(110vh) rotate(0); opacity: 1; } 100% { transform: translateY(-20vh) rotate(360deg); opacity: 0; } }
+
+        /* مطرة الفرح (فوق الصور) */
+        .joy-particle { position: fixed; pointer-events: none; z-index: 100; font-size: 30px; animation: rainFall 3s linear forwards; }
+        @keyframes rainFall { 0% { transform: translateY(-10vh) rotate(0); opacity: 1; } 100% { transform: translateY(110vh) rotate(360deg); opacity: 0; } }
+
+        .butterfly-deco { position: absolute; font-size: 24px; z-index: 15; animation: flutter 3s infinite ease-in-out; }
+        @keyframes flutter { 0%, 100% { transform: translateY(0) rotate(0); } 50% { transform: translateY(-10px) rotate(15deg); } }
     </style>
 </head>
 <body>
 
     <div id="password-gate">
         <div class="pass-card">
-            <div class="nono-heart" style="font-size: 50px; margin: 0 0 15px 0; animation: beat 1.5s infinite;"></div>
-            <h2 style="color: var(--darker-pink); margin: 0;">🔐 قفل المفاجأة</h2>
-            <p style="color: #777; margin-top: 10px; font-size: 0.9em;">أدخل التاريخ السري يا نونو</p>
+            <h2 style="color: var(--darker-pink);">🔐 قفل المفاجأة</h2>
+            <p style="color: #666;">أدخل التاريخ السري يا نونو</p>
             <input type="text" id="passInput" placeholder="اليوم/الشهر/السنة">
-            <button class="magic-btn" style="width: 100%;" onclick="unlock()">فتح 🔓</button>
-            <p id="error-msg" style="display:none; color: var(--darker-pink); margin-top: 15px; font-weight: bold;">ركز يا نونو! 😉</p>
+            <button class="magic-btn" style="width: 100%;" onclick="checkPass()">فتح 🔓</button>
+            <p id="error-msg" style="display:none; color: var(--darker-pink); margin-top: 15px; font-weight: bold;">ركز يا نونو.. حاول تاني! 😉</p>
         </div>
     </div>
 
     <div id="overlay">
-        <div class="nono-heart" style="font-size: 60px; color: white; animation: beat 1s infinite; margin-bottom: 20px;"></div>
         <h2 style="color: white; margin-bottom: 40px;">جاهز للمفاجأة؟ ✨</h2>
         <button class="enter-btn" onclick="startEverything()">افتح الهدية 🎁</button>
     </div>
 
     <div id="mainContent">
         <div id="floating-container"></div>
+        <div id="rain-container"></div>
+        
         <div class="container">
-            <h1 style="color: var(--darker-pink); font-weight: 800; margin-bottom: 10px;">كل سنة وأنت طيب يا نونو ✨</h1>
-            
-            <div class="nono-heart"></div>
-
-            <div id="countdown">جاري الحساب...</div>
-            
-            <button class="joy-btn" onclick="rainJoy()">اضغط لمطرة الفرح 🍭</button>
-
-            <div class="slider-frame" id="slider1">
-                <img src="1.jpg" class="active"><img src="2.jpg"><img src="3.jpg">
+            <div class="section-gap">
+                <h1 style="color: var(--darker-pink); font-weight: 800; margin: 0;">كل سنة وأنت طيب يا نونو ✨</h1>
             </div>
 
-            <div class="wheel-container">
-                <div class="wheel-pointer"></div>
-                <div id="wheel"></div>
-                <button class="magic-btn" onclick="spinWheel()">لف العجلة وشوف حظك 🎡</button>
-                <div id="wheel-msg"></div>
+            <div class="section-gap">
+                <div class="nono-heart">❤️</div>
             </div>
 
-            <div class="flip-card">
-                <div class="flip-card-inner">
-                    <div class="flip-front"><h3>المس الكارت 🃏</h3></div>
-                    <div class="flip-back"><p>إنت مش بس نونو، إنت أجدع صاحب وأخ، وجودك في حياتي نعمة كبيرة.. خليك دايماً مبسوط وناجح! ❤️</p></div>
+            <div class="section-gap">
+                <div id="countdown" style="font-weight: bold; background: var(--soft-pink); padding: 15px; border-radius: 50px; border: 1px solid var(--main-pink);">جاري الحساب...</div>
+            </div>
+
+            <div class="section-gap">
+                <button class="magic-btn" style="background: #ffeb3b; color: #880e4f;" onclick="makeItRain()">اضغط لمطرة الفرح 🥳</button>
+            </div>
+
+            <div class="section-gap">
+                <div class="butterfly-deco" style="top: -20px; right: -10px;">🦋</div>
+                <div class="slider-frame" id="slider1">
+                    <img src="1.jpg" class="active"><img src="2.jpg"><img src="3.jpg">
                 </div>
             </div>
 
-            <div class="memory-box">
-                <h3 style="margin: 0; color: var(--darker-pink);">صندوق ذكريات ومشاعر 📦</h3>
-                <p id="memory-text">دوس عشان تفتح ذكرى أو شعور حلو..</p>
-                <button class="magic-btn" onclick="openMemory()">افتح الصندوق ✨</button>
+            <div class="section-gap">
+                <div id="wheel"></div>
+                <button class="magic-btn" onclick="spinWheel()">لف العجلة وشوف حظك 🎡</button>
+                <div id="wheel-msg" style="margin-top: 20px; font-weight: bold; color: var(--darker-pink); min-height: 25px;"></div>
             </div>
 
-            <div class="slider-frame" id="slider2" style="margin-top: 50px;">
-                <img src="new1.jpg" class="active"><img src="new2.jpg"><img src="new3.jpg">
+            <div class="section-gap">
+                <div class="butterfly-deco" style="top: -20px; left: -10px;">🦋</div>
+                <div class="flip-card">
+                    <div class="flip-card-inner">
+                        <div class="flip-front"><h3>المس الكارت يا نونو 🃏</h3></div>
+                        <div class="flip-back"><p>إنت أجدع وأغلى صديق، وجودك بيخلي كل حاجة أحلى. دايماً ناجح ومبسوط يا بطل! ❤️</p></div>
+                    </div>
+                </div>
             </div>
 
-            <div style="font-family: 'Dancing Script', cursive; font-size: 1.8em; color: var(--darker-pink); margin: 40px 0;">"To the guy who makes every moment feel like magic." ✨</div>
+            <div class="section-gap">
+                <div class="memory-box">
+                    <h3 style="margin: 0; color: var(--darker-pink);">صندوق ذكريات نونو 📦</h3>
+                    <p id="memory-text" style="margin: 20px 0; font-style: italic; color: #555;">دوس عشان تشوف ذكرى حلوة..</p>
+                    <button class="magic-btn" onclick="openMemory()">افتح الصندوق ✨</button>
+                </div>
+            </div>
+
+            <div class="section-gap">
+                <div class="slider-frame" id="slider2">
+                    <img src="new1.jpg" class="active"><img src="new2.jpg"><img src="new3.jpg">
+                </div>
+            </div>
+
+            <div style="font-family: 'Dancing Script', cursive; font-size: 2em; color: var(--darker-pink); margin-top: 20px;">"You are simply the best!" ✨</div>
 
             <audio id="myAudio" loop><source src="music.mp3" type="audio/mpeg"></audio>
         </div>
     </div>
 
     <script>
-        // الباسورد سري تماماً
-        function unlock() {
-            if (document.getElementById("passInput").value.trim() === "20/4/2000") {
+        function checkPass() {
+            const input = document.getElementById("passInput").value.trim();
+            if (input === "20/4/2000") {
                 document.getElementById("password-gate").style.display = "none";
                 document.getElementById("overlay").style.display = "flex";
             } else {
@@ -144,46 +164,72 @@
         }
 
         function startEverything() {
-            document.getElementById("myAudio").play().catch(() => { console.log("Audio blocked"); });
+            const audio = document.getElementById("myAudio");
+            audio.play().catch(e => console.log("Music ready"));
             document.getElementById("overlay").style.display = "none";
             document.getElementById("mainContent").style.opacity = "1";
-            setInterval(createFloating, 400);
+            setInterval(spawnFloating, 500);
         }
 
-        // عجلة الحظ (جمل جديدة ومختلفة لنونو الولد)
-        let rot = 0;
+        function makeItRain() {
+            const container = document.getElementById("rain-container");
+            for(let i=0; i<40; i++) {
+                setTimeout(() => {
+                    const p = document.createElement("div");
+                    p.innerHTML = "🥳";
+                    p.className = "joy-particle";
+                    p.style.left = Math.random() * 100 + "vw";
+                    p.style.top = "-50px";
+                    container.appendChild(p);
+                    setTimeout(() => p.remove(), 3000);
+                }, i * 100);
+            }
+        }
+
+        let rotation = 0;
         function spinWheel() {
-            rot += 1800 + Math.random() * 360;
-            document.getElementById('wheel').style.transform = `rotate(${rot}deg)`;
-            const wheelMsgs = [
-                "مستقبلك باهر يا بطل ✨",
-                "أجدع صاحب في الكوكب 🎈",
-                "يومك دايماً أبيض ❤️",
-                "دايماً ناجح ومتفوق 🌟",
-                "ضحكتك بتنور حياتنا 😊",
-                "اللي جاي أحلى بكتير 💪"
-            ];
-            document.getElementById('wheel-msg').innerHTML = "بيفكر في حاجة حلوة...";
+            rotation += 1800 + Math.random() * 360;
+            document.getElementById('wheel').style.transform = `rotate(${rotation}deg)`;
+            const msgs = ["مستقبلك باهر يا بطل ✨", "أجدع نونو في الدنيا 🎈", "يومك دايماً أبيض ❤️", "دايماً ناجح ومبسوط 🌟", "ضحكتك بتنور حياتنا 😊"];
+            document.getElementById("wheel-msg").innerHTML = "بيفكر...";
             setTimeout(() => {
-                document.getElementById("wheel-msg").innerHTML = wheelMsgs[Math.floor(Math.random()*wheelMsgs.length)];
+                document.getElementById("wheel-msg").innerHTML = msgs[Math.floor(Math.random()*msgs.length)];
             }, 4000);
         }
 
-        // صندوق الذكريات (جمل جديدة ومختلفة لنونو الولد)
         function openMemory() {
-            const memoryMsgs = [
-                "فخور بيك وبكل خطوة بتنجح فيها ❤️",
-                "ذكرياتنا سوا هي أحلى ذكريات رجولة ✨",
-                "وجودك في يومي بيخليه أحلى بكتير 🌸",
-                "يا رب كل أحلامك تتحقق السنة دي 🎂",
-                "إنت السند والضهر الحقيقي 🤝",
-                "ممنون لكل لحظة جدعنة معاك 🌟"
-            ];
-            document.getElementById("memory-text").innerHTML = memoryMsgs[Math.floor(Math.random()*memoryMsgs.length)];
+            const msgs = ["فخور بيك وبكل خطوة بتنجح فيها ❤️", "ذكرياتنا سوا هي أحلى ذكريات ✨", "وجودك في يومي بيخليه أحلى بكتير 🌸", "إنت السند والضهر الحقيقي 🤝"];
+            document.getElementById("memory-text").innerHTML = msgs[Math.floor(Math.random()*msgs.length)];
         }
-
-        function rainJoy() { for(let i=0; i<35; i++) { setTimeout(createFloating, i*50); } }
 
         const birthdayDate = new Date("April 20, 2026 00:00:00").getTime();
         setInterval(() => {
-            const now = new Date
+            const now = new Date().getTime();
+            const diff = birthdayDate - now;
+            const days = Math.floor(diff / (1000 * 60 * 60 * 24));
+            const hours = Math.floor((diff % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+            document.getElementById("countdown").innerHTML = diff > 0 ? `باقي ${days} يوم و ${hours} ساعة على يومك الكبير 🎂` : "عيد ميلاد سعيد يا نونو! 🎉";
+        }, 1000);
+
+        function runSlider(id) {
+            let curr = 0; const imgs = document.querySelectorAll(`#${id} img`);
+            setInterval(() => {
+                imgs[curr].classList.remove('active');
+                curr = (curr + 1) % imgs.length;
+                imgs[curr].classList.add('active');
+            }, 4000);
+        }
+        runSlider('slider1'); runSlider('slider2');
+
+        function spawnFloating() {
+            const el = document.createElement("div");
+            el.innerHTML = ["❤️", "🦋", "✨", "🌸", "💖"][Math.floor(Math.random()*5)];
+            el.className = "floating";
+            el.style.left = Math.random() * 100 + "vw";
+            el.style.fontSize = (Math.random() * 20 + 20) + "px";
+            document.getElementById("floating-container").appendChild(el);
+            setTimeout(() => el.remove(), 6000);
+        }
+    </script>
+</body>
+</html>
