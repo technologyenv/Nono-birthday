@@ -7,49 +7,49 @@
     <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;700&family=Dancing+Script:wght@700&display=swap" rel="stylesheet">
     <style>
         :root { 
-            --deep-pink: #c2185b; /* بينك غامق */
-            --mid-pink: #ad1457; 
-            --soft-pink: #f8bbd0;
-            --bg-dark: #880e4f; /* أغمق درجة للخلفية */
+            --main-pink: #ff85a1; /* بينك فاتح سيكا ومبهج */
+            --darker-pink: #f06292; 
+            --soft-pink: #ffebee;
+            --bg-pink: #fce4ec; 
         }
         
         body { 
             margin: 0; padding: 0; font-family: 'Cairo', sans-serif; 
-            background: var(--bg-dark); /* مفيش أبيض خالص */
-            min-height: 100vh; overflow-x: hidden; color: white;
+            background: var(--bg-pink); color: #880e4f;
+            min-height: 100vh; overflow-x: hidden;
         }
 
-        /* شاشة الباسورد الجديدة */
+        /* شاشة الباسورد (بصيغة المذكر) */
         #password-gate {
             position: fixed; top: 0; left: 0; width: 100%; height: 100%;
-            background: var(--bg-dark); z-index: 2000;
+            background: var(--bg-pink); z-index: 2000;
             display: flex; flex-direction: column; align-items: center; justify-content: center;
         }
         .pass-card {
-            background: var(--mid-pink); padding: 40px; border-radius: 30px;
-            box-shadow: 0 15px 35px rgba(0,0,0,0.3); border: 2px solid var(--soft-pink);
+            background: white; padding: 40px; border-radius: 30px;
+            box-shadow: 0 15px 35px rgba(255,133,161,0.3); border: 2px solid var(--main-pink);
             text-align: center; width: 85%; max-width: 350px;
         }
         input#passInput {
             width: 100%; padding: 12px; margin: 20px 0; border-radius: 15px;
-            border: none; text-align: center; font-size: 1.1em; outline: none;
-            background: var(--soft-pink); color: var(--bg-dark); font-weight: bold;
+            border: 2px solid var(--soft-pink); text-align: center; font-size: 1.1em; outline: none;
+            background: #fff; color: var(--darker-pink); font-weight: bold;
         }
 
         #overlay { 
             position: fixed; top: 0; left: 0; width: 100%; height: 100%; 
-            background: var(--mid-pink); z-index: 1000; display: none; 
+            background: var(--main-pink); z-index: 1000; display: none; 
             flex-direction: column; align-items: center; justify-content: center; 
         }
         
         .enter-btn { 
-            background: var(--soft-pink); color: var(--bg-dark); border: none; 
+            background: white; color: var(--main-pink); border: none; 
             padding: 15px 40px; border-radius: 50px; font-size: 1.3em; 
-            cursor: pointer; font-weight: 800; box-shadow: 0 10px 20px rgba(0,0,0,0.2); 
+            cursor: pointer; font-weight: 800; box-shadow: 0 10px 20px rgba(0,0,0,0.1); 
             animation: pulse 2s infinite; 
         }
 
-        @keyframes pulse { 0%, 100% { transform: scale(1); opacity: 1; } 50% { transform: scale(1.1); opacity: 0.8; } }
+        @keyframes pulse { 0%, 100% { transform: scale(1); } 50% { transform: scale(1.1); } }
 
         #mainContent { 
             opacity: 0; transition: opacity 1s ease-in; 
@@ -57,56 +57,59 @@
         }
 
         .container { 
-            background: var(--mid-pink); padding: 35px 25px; border-radius: 35px; 
-            box-shadow: 0 20px 50px rgba(0,0,0,0.4); width: 85%; max-width: 420px; 
-            margin: 40px 20px; border: 2px solid var(--deep-pink); 
+            background: white; padding: 35px 25px; border-radius: 35px; 
+            box-shadow: 0 20px 50px rgba(255,133,161,0.2); width: 85%; max-width: 420px; 
+            margin: 40px 20px; border: 1px solid var(--soft-pink); 
         }
 
         .slider-frame { 
             position: relative; width: 100%; height: 380px; border-radius: 25px; 
-            overflow: hidden; margin: 20px 0; border: 3px solid var(--soft-pink); 
-            box-shadow: 0 0 20px var(--deep-pink);
+            overflow: hidden; margin: 20px 0; border: 4px solid white; 
+            box-shadow: 0 10px 20px rgba(0,0,0,0.1);
         }
         .slider-frame img { width: 100%; height: 100%; object-fit: cover; position: absolute; top: 0; left: 0; opacity: 0; transition: opacity 1.5s; }
         .slider-frame img.active { opacity: 1; }
 
         .friendship-box { 
-            background: var(--bg-dark); padding: 15px; border-radius: 20px; 
-            margin: 20px 0; border: 1px solid var(--soft-pink); 
+            background: var(--soft-pink); padding: 15px; border-radius: 20px; 
+            margin: 20px 0; border: 1px solid var(--main-pink); 
         }
-        .friendship-box h4 { color: var(--soft-pink); margin: 0 0 10px 0; }
-        #friendship-counter { font-weight: bold; color: #ffeb3b; font-size: 1em; text-shadow: 0 0 5px rgba(255,235,59,0.5); }
+        #friendship-counter { font-weight: bold; color: var(--darker-pink); }
+
+        /* --- العجلة الكريتيف --- */
+        .wheel-container { margin: 30px 0; position: relative; display: flex; flex-direction: column; align-items: center; }
+        #wheel { width: 200px; height: 200px; border-radius: 50%; border: 5px solid white; box-shadow: 0 0 15px var(--main-pink); transition: transform 4s cubic-bezier(0.17, 0.67, 0.12, 0.99); background: conic-gradient(var(--main-pink) 0deg 60deg, var(--darker-pink) 60deg 120deg, var(--main-pink) 120deg 180deg, var(--darker-pink) 180deg 240deg, var(--main-pink) 240deg 300deg, var(--darker-pink) 300deg 360deg); }
+        .wheel-pointer { width: 0; height: 0; border-left: 15px solid transparent; border-right: 15px solid transparent; border-top: 30px solid #880e4f; position: absolute; top: -10px; z-index: 10; }
 
         .flip-card { background-color: transparent; width: 100%; height: 180px; perspective: 1000px; margin: 25px 0; }
         .flip-card-inner { position: relative; width: 100%; height: 100%; transition: transform 0.8s; transform-style: preserve-3d; cursor: pointer; }
         .flip-card:hover .flip-card-inner { transform: rotateY(180deg); }
         .flip-front, .flip-back { position: absolute; width: 100%; height: 100%; backface-visibility: hidden; border-radius: 20px; display: flex; align-items: center; justify-content: center; flex-direction: column; padding: 15px; }
-        .flip-front { background: var(--deep-pink); color: white; border: 2px dashed var(--soft-pink); }
-        .flip-back { background: var(--bg-dark); color: var(--soft-pink); transform: rotateY(180deg); border: 2px solid var(--soft-pink); }
+        .flip-front { background: var(--main-pink); color: white; }
+        .flip-back { background: var(--darker-pink); color: white; transform: rotateY(180deg); }
 
         .magic-btn { 
-            background: var(--soft-pink); color: var(--bg-dark); border: none; 
+            background: var(--main-pink); color: white; border: none; 
             padding: 12px 25px; border-radius: 25px; cursor: pointer; 
-            font-weight: bold; margin-top: 15px; box-shadow: 0 5px 15px rgba(0,0,0,0.2);
+            font-weight: bold; margin-top: 15px; box-shadow: 0 5px 15px rgba(0,0,0,0.1);
         }
-        #random-msg { margin-top: 15px; color: #fff; font-weight: bold; min-height: 40px; text-shadow: 1px 1px 2px var(--bg-dark); }
-
-        .floating { position: fixed; pointer-events: none; z-index: -1; animation: moveUp 6s linear forwards; opacity: 0.6; }
+        
+        .floating { position: fixed; pointer-events: none; z-index: -1; animation: moveUp 6s linear forwards; }
         @keyframes moveUp { 0% { transform: translateY(110vh) rotate(0); opacity: 1; } 100% { transform: translateY(-20vh) rotate(360deg); opacity: 0; } }
         
-        .english-quote { font-family: 'Dancing Script', cursive; font-size: 1.8em; color: var(--soft-pink); margin: 20px 0; direction: ltr; }
-        #countdown { color: #fff; background: var(--bg-dark); padding: 12px; border-radius: 50px; border: 1px solid var(--soft-pink); }
+        .english-quote { font-family: 'Dancing Script', cursive; font-size: 1.8em; color: var(--darker-pink); margin: 20px 0; }
+        #countdown { color: var(--darker-pink); background: white; padding: 12px; border-radius: 50px; border: 2px solid var(--soft-pink); font-weight: bold; }
     </style>
 </head>
 <body>
 
     <div id="password-gate">
         <div class="pass-card">
-            <h2 style="color: white; margin: 0;">🔐 قفل المفاجأة</h2>
-            <p style="color: var(--soft-pink); margin-top: 10px;">أدخلي التاريخ السري يا نونو</p>
+            <h2 style="color: var(--darker-pink); margin: 0;">🔐 قفل المفاجأة</h2>
+            <p style="color: #666; margin-top: 10px;">أدخل التاريخ السري يا نونو</p>
             <input type="text" id="passInput" placeholder="اليوم/الشهر/السنة">
             <button class="magic-btn" style="width: 100%;" onclick="unlock()">فتح 🔓</button>
-            <p id="error-msg" style="display:none; color: #ffeb3b; margin-top: 10px; font-size: 0.9em;">ركز يا نونو! 😉</p>
+            <p id="error-msg" style="display:none; color: var(--darker-pink); margin-top: 10px; font-size: 0.9em;">ركز يا نونو! 😉</p>
         </div>
     </div>
 
@@ -118,19 +121,25 @@
     <div id="mainContent">
         <div id="floating-container"></div>
         <div class="container">
-            <h1 style="color: white; font-weight: 800;">كل سنة وأنت طيب يا نونو ✨</h1>
-            
+            <h1>كل سنة وأنت طيب يا نونو ✨</h1>
             <div id="countdown">جاري الحساب...</div>
             
             <div class="slider-frame" id="slider1">
                 <img src="1.jpg" class="active"><img src="2.jpg"><img src="3.jpg">
             </div>
 
-            <p style="color: var(--soft-pink); font-size: 1.1em;">ذكرياتنا هي أحلى حاجة حصلت في حياتي..</p>
+            <p>ذكرياتنا هي أحلى حاجة حصلت في حياتي..</p>
 
             <div class="friendship-box">
                 <h4>إحنا مع بعض بقالنا: ✨</h4>
                 <div id="friendship-counter">بيحسب الأيام الحلوة...</div>
+            </div>
+
+            <div class="wheel-container">
+                <div class="wheel-pointer"></div>
+                <div id="wheel"></div>
+                <button class="magic-btn" onclick="spinWheel()">لف العجلة وشوف حظك 🎡</button>
+                <div id="wheel-msg" style="margin-top: 15px; font-weight: bold; color: var(--darker-pink); min-height: 24px;"></div>
             </div>
 
             <div class="flip-card">
@@ -145,9 +154,6 @@
             </div>
 
             <div class="english-quote">"To the person who makes every moment feel like magic." ✨</div>
-
-            <button class="magic-btn" onclick="showMsg()">دوس هنا وشوف حظك 💌</button>
-            <div id="random-msg"></div>
 
             <audio id="myAudio" loop><source src="music.mp3" type="audio/mpeg"></audio>
         </div>
@@ -172,6 +178,19 @@
             setInterval(createFloating, 400);
         }
 
+        // عجلة الحظ
+        let rotation = 0;
+        const msgs = ["ضحكتك بتنور الدنيا ✨", "إنت بجد مفيش منك اتنين!", "يوم ميلادك أحلى يوم 🎈", "يا رب دايماً ناجح ومبسوط ❤️", "ممنون لكل لحظة معاك", "اللي جاي أحلى بكتير 🌟"];
+        function spinWheel() {
+            rotation += 1800 + Math.random() * 360;
+            document.getElementById('wheel').style.transform = `rotate(${rotation}deg)`;
+            document.getElementById('wheel-msg').innerHTML = "بيفكر في حاجة حلوة...";
+            setTimeout(() => {
+                const m = msgs[Math.floor(Math.random()*msgs.length)];
+                document.getElementById("wheel-msg").innerHTML = m;
+            }, 4000);
+        }
+
         const birthdayDate = new Date("April 20, 2026 00:00:00").getTime();
         const friendshipStartDate = new Date("March 25, 2026 00:00:00").getTime();
 
@@ -180,24 +199,13 @@
             const diffB = birthdayDate - now;
             const daysB = Math.floor(diffB / (1000 * 60 * 60 * 24));
             const hoursB = Math.floor((diffB % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
-            if (diffB > 0) {
-                document.getElementById("countdown").innerHTML = `باقي ${daysB} يوم و ${hoursB} ساعة على يومك الكبير 🎂`;
-            } else {
-                document.getElementById("countdown").innerHTML = `عيد ميلاد سعيد يا نونو! 🎉✨`;
-            }
+            document.getElementById("countdown").innerHTML = diffB > 0 ? `باقي ${daysB} يوم و ${hoursB} ساعة على يومك الكبير 🎂` : "عيد ميلاد سعيد يا نونو! 🎉";
 
             const diffF = now - friendshipStartDate;
             const daysF = Math.floor(diffF / (1000 * 60 * 60 * 24));
             const hoursF = Math.floor((diffF % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
-            const minsF = Math.floor((diffF % (1000 * 60 * 60)) / (1000 * 60));
-            document.getElementById("friendship-counter").innerHTML = `${daysF} يوم و ${hoursF} ساعة و ${minsF} دقيقة ❤️`;
+            document.getElementById("friendship-counter").innerHTML = `${daysF} يوم و ${hoursF} ساعة ❤️`;
         }, 1000);
-
-        const msgs = ["ضحكتك بتنور الدنيا ✨", "إنت بجد شخص مفيش منك اتنين!", "يوم ميلادك أحلى يوم 🎈", "يا رب دايماً ناجح ومبسوط ❤️", "ممنونة لكل لحظة معاك", "اللي جاي أحلى بكتير 🌟"];
-        function showMsg() {
-            const m = msgs[Math.floor(Math.random()*msgs.length)];
-            document.getElementById("random-msg").innerHTML = m;
-        }
 
         function runSlider(id) {
             let curr = 0; const imgs = document.querySelectorAll(`#${id} img`);
@@ -211,8 +219,7 @@
 
         function createFloating() {
             const el = document.createElement("div");
-            const items = ["❤️", "🎈", "✨", "🌸", "💖"];
-            el.innerHTML = items[Math.floor(Math.random()*items.length)];
+            el.innerHTML = ["❤️", "🎈", "✨", "🌸"][Math.floor(Math.random()*4)];
             el.className = "floating";
             el.style.left = Math.random() * 100 + "vw";
             el.style.fontSize = (Math.random() * 20 + 20) + "px";
